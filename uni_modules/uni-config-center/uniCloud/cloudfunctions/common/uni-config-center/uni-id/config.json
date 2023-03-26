@@ -31,14 +31,15 @@
     },
     "service": {
       "sms": {
-        "name": "", 
+        "name": "设置密码", 
         "codeExpiresIn": 180,
-        "smsKey": "", 
+        "smsKey": "aeb5ee257bcb409f7abad40c52f9cc86", 
+        "smsSecret": "fe373ccf61514c25352322ac9d4b201e", 
         "scene": {
-          "bind-mobile-by-sms": { 
-            "templateId": "", 
-            "codeExpiresIn": 240 
-          }
+          "set-pwd-by-sms": { 
+            "templateId": "17346", 
+            "codeExpiresIn": 300
+        }
         }
       }
     }
