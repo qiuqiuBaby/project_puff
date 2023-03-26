@@ -1,0 +1,46 @@
+{
+    "passwordSecret": [
+      {
+        "type": "hmac-sha256",
+        "version": 1
+      }
+    ], 
+    "passwordStrength": "medium",
+    "tokenSecret": "jingjingbaby", 
+    "requestAuthSecret": "", 
+    "tokenExpiresIn": 7200, 
+    "tokenExpiresThreshold": 3600, 
+    "passwordErrorLimit": 6, 
+    "passwordErrorRetryTime": 3600,
+    "autoSetInviteCode": false, 
+    "forceInviteCode": false, 
+    "idCardCertifyLimit": 1, 
+    "realNameCertifyLimit": 5, 
+    "sensitiveInfoEncryptSecret": "", 
+    "frvNeedAlivePhoto": false, 
+    "userRegisterDefaultRole": [],
+    "mp-weixin": {
+      "tokenExpiresIn": 259200,
+      "tokenExpiresThreshold": 86400,
+      "oauth": {
+        "weixin": {
+          "appid": "wxa703e5a3d2e637c1",
+          "appsecret": "fbd7a7ac3f3f5bcf292f956d98e0b995"
+        }
+      }
+    },
+    "service": {
+      "sms": {
+        "name": "", 
+        "codeExpiresIn": 180,
+        "smsKey": "", 
+        "scene": {
+          "bind-mobile-by-sms": { 
+            "templateId": "", 
+            "codeExpiresIn": 240 
+          }
+        }
+      }
+    }
+  }
+  
