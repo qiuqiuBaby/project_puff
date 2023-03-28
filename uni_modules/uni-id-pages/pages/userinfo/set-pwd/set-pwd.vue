@@ -27,7 +27,7 @@
         <uni-easyinput class="input-box" type="number" :inputBorder="false" v-model="formData.phone" placeholder="请输入手机号">
         </uni-easyinput>
       </uni-forms-item>
-      <uni-id-pages-sms-form v-model="formData.code" type="set-pwd-by-sms" ref="smsCode" :phone="formData.phone">
+      <uni-id-pages-sms-form v-model="formData.code" @updateCaptcha="(value) => formData.captcha = value" type="set-pwd-by-sms" ref="smsCode" :phone="formData.phone">
       </uni-id-pages-sms-form>
       <view class="link-box">
         <button class="uni-btn send-btn" type="primary" @click="submit">确认</button>
@@ -35,8 +35,8 @@
       </view>
 
     </uni-forms>
-    <uni-popup-captcha @confirm="submit" v-model="formData.captcha" scene="set-pwd-by-sms"
-      ref="popup"></uni-popup-captcha>
+    <!-- <uni-popup-captcha @confirm="submit" v-model="formData.captcha" scene="set-pwd-by-sms"
+      ref="popup"></uni-popup-captcha> -->
   </view>
 </template>
 
@@ -99,9 +99,17 @@ export default {
         });
       }
 
+      console.log({
+            mobile: this.formData.phone,
+            password: this.formData.newPassword,
+            code: this.formData.code,
+            captcha: this.formData.captcha
+          }, 111);
+
       this.$refs.form.validate()
         .then(res => {
-          uniIdCo.setPwd({
+          uniIdCo.resetPwdBySms({
+            mobile: this.formData.phone,
             password: this.formData.newPassword,
             code: this.formData.code,
             captcha: this.formData.captcha
@@ -122,14 +130,15 @@ export default {
               showCancel: false
             });
           })
-        }).catch(e => {
+        })
+        .catch(e => {
           if (e.errCode == 'uni-id-captcha-required') {
             this.$refs.popup.open()
           } else {
             console.log(e.errMsg);
           }
         }).finally(e => {
-          this.formData.captcha = ''
+          // this.formData.captcha = ''
         })
     },
     skip() {
@@ -139,7 +148,6 @@ export default {
     },
     //验证码
     async getCaptcha() {
-      console.log('== qhx ==',this.formData.captcha)
       let legalPhone = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
       if (!legalPhone.test(this.formData.phone)) {
         uni.showToast({

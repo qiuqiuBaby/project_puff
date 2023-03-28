@@ -91,6 +91,8 @@
 				if (value.length == 4 && oldValue.length != 4) {
 					this.start()
 				}
+
+				this.$emit('updateCaptcha', value)
 			},
 			modelValue(value) {
 				// TODO 兼容 vue2

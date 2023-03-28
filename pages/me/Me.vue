@@ -43,7 +43,7 @@
                 <view class="finish">已认证</view>
                 <uni-icons type="forward" size="12" class="uni-icon"></uni-icons>
             </view>
-            <view class="client" @click="enterClient">
+            <view class="client">
                 <image src="/static/images/coachMy/client.png" class="icon"></image>
                 <view class="word">修改密码</view>
                 <uni-icons type="forward" size="12" class="uni-icon"></uni-icons>
