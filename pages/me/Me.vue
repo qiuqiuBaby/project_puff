@@ -38,13 +38,13 @@
         <!-- 教练认证和进入用户端 -->
         <view class="operation">
             <view class="operation-authentication">
-                <image src="/static/images/coachMy/authentication.png" class="icon"></image>
+                <image src="/static/image/me/certificate.png" class="icon"></image>
                 <view class="word">房东认证</view>
                 <view class="finish">已认证</view>
                 <uni-icons type="forward" size="12" class="uni-icon"></uni-icons>
             </view>
             <view class="client">
-                <image src="/static/images/coachMy/client.png" class="icon"></image>
+                <image src="/static/image/me/certificate.png" class="icon"></image>
                 <view class="word">修改密码</view>
                 <uni-icons type="forward" size="12" class="uni-icon"></uni-icons>
             </view>

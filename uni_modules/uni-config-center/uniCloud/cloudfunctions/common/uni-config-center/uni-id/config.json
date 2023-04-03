@@ -36,7 +36,7 @@
         "smsKey": "aeb5ee257bcb409f7abad40c52f9cc86", 
         "smsSecret": "fe373ccf61514c25352322ac9d4b201e", 
         "scene": {
-          "set-pwd-by-sms": { 
+          "reset-pwd-by-sms": {
             "templateId": "17346", 
             "codeExpiresIn": 300
         }

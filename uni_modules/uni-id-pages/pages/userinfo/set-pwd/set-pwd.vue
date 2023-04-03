@@ -27,7 +27,7 @@
         <uni-easyinput class="input-box" type="number" :inputBorder="false" v-model="formData.phone" placeholder="请输入手机号">
         </uni-easyinput>
       </uni-forms-item>
-      <uni-id-pages-sms-form v-model="formData.code" @updateCaptcha="(value) => formData.captcha = value" type="set-pwd-by-sms" ref="smsCode" :phone="formData.phone">
+      <uni-id-pages-sms-form v-model="formData.code" @updateCaptcha="(value) => formData.captcha = value" type="reset-pwd-by-sms" ref="smsCode" :phone="formData.phone">
       </uni-id-pages-sms-form>
       <view class="link-box">
         <button class="uni-btn send-btn" type="primary" @click="submit">确认</button>
@@ -35,7 +35,7 @@
       </view>
 
     </uni-forms>
-    <!-- <uni-popup-captcha @confirm="submit" v-model="formData.captcha" scene="set-pwd-by-sms"
+    <!-- <uni-popup-captcha @confirm="submit" v-model="formData.captcha" scene="reset-pwd-by-sms"
       ref="popup"></uni-popup-captcha> -->
   </view>
 </template>
@@ -98,14 +98,6 @@ export default {
           icon: 'none'
         });
       }
-
-      console.log({
-            mobile: this.formData.phone,
-            password: this.formData.newPassword,
-            code: this.formData.code,
-            captcha: this.formData.captcha
-          }, 111);
-
       this.$refs.form.validate()
         .then(res => {
           uniIdCo.resetPwdBySms({
@@ -160,7 +152,7 @@ export default {
       await uniIdCo.sendSmsCode({
         mobile: this.formData.phone,
         captcha: this.formData.captcha,
-        scene: "set-pwd-by-sms"
+        scene: "reset-pwd-by-smss"
       })
       console.log('验证码发送成功')
     },

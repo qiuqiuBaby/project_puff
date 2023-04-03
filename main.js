@@ -1,5 +1,5 @@
 import App from './App'
-
+import uView from 'uview-ui'
 // #ifndef VUE3
 import Vue from 'vue'
 Vue.config.productionTip = false
@@ -19,3 +19,7 @@ export function createApp() {
   }
 }
 // #endif
+// main.js，注意要在use方法之后执行
+Vue.use(uView)
+// 如此配置即可
+uni.$u.config.unit = 'rpx'
