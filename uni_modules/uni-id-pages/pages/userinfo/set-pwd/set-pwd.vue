@@ -12,47 +12,40 @@
     <uni-forms class="set-password-form" ref="form" :value="formData" err-show-type="toast">
       <text class="tip">输入密码</text>
       <uni-forms-item name="newPassword">
-        <uni-easyinput :focus="focusNewPassword" @blur="focusNewPassword = false" class="input-box" type="password"
-          :inputBorder="false" v-model="formData.newPassword" placeholder="请输入密码">
+        <uni-easyinput :focus="focusNewPassword" @blur="focusNewPassword = false" class="input-box"
+                       type="password" :inputBorder="false" v-model="formData.newPassword" placeholder="请输入密码">
         </uni-easyinput>
       </uni-forms-item>
       <text class="tip">再次输入密码</text>
       <uni-forms-item name="newPassword2">
-        <uni-easyinput :focus="focusNewPassword2" @blur="focusNewPassword2 = false" class="input-box" type="password"
-          :inputBorder="false" v-model="formData.newPassword2" placeholder="请再次输入新密码">
+        <uni-easyinput :focus="focusNewPassword2" @blur="focusNewPassword2 = false" class="input-box"
+                       type="password" :inputBorder="false" v-model="formData.newPassword2" placeholder="请再次输入新密码">
         </uni-easyinput>
       </uni-forms-item>
-      <text class="tip">输入手机号码</text>
-      <uni-forms-item name="newPassword2">
-        <uni-easyinput class="input-box" type="number" :inputBorder="false" v-model="formData.phone" placeholder="请输入手机号">
-        </uni-easyinput>
-      </uni-forms-item>
-      <uni-id-pages-sms-form v-model="formData.code" @updateCaptcha="(value) => formData.captcha = value" type="reset-pwd-by-sms" ref="smsCode" :phone="formData.phone">
+      <uni-id-pages-sms-form v-model="formData.code" type="set-pwd-by-sms" ref="smsCode" :phone="userInfo.mobile">
       </uni-id-pages-sms-form>
       <view class="link-box">
         <button class="uni-btn send-btn" type="primary" @click="submit">确认</button>
-        <!-- <button v-if="allowSkip" class="uni-btn send-btn" type="default" @click="skip">跳过</button> -->
+        <button v-if="allowSkip" class="uni-btn send-btn" type="default" @click="skip">跳过</button>
       </view>
 
     </uni-forms>
-    <!-- <uni-popup-captcha @confirm="submit" v-model="formData.captcha" scene="reset-pwd-by-sms"
-      ref="popup"></uni-popup-captcha> -->
+    <uni-popup-captcha @confirm="submit" v-model="formData.captcha" scene="set-pwd-by-sms" ref="popup"></uni-popup-captcha>
   </view>
 </template>
 
 <script>
 import passwordMod from '@/uni_modules/uni-id-pages/common/password.js'
-import { store, mutations } from '@/uni_modules/uni-id-pages/common/store.js'
+import {store, mutations} from '@/uni_modules/uni-id-pages/common/store.js'
 import config from '@/uni_modules/uni-id-pages/config.js'
 
 const uniIdCo = uniCloud.importObject("uni-id-co", {
-  customUI: true
+  customUI:true
 })
 export default {
   name: "set-pwd.vue",
-  data() {
+  data () {
     return {
-      reverseNumber: 0,
       uniIdRedirectUrl: '',
       loginType: '',
       logo: '/static/logo.png',
@@ -60,7 +53,6 @@ export default {
       focusNewPassword2: false,
       allowSkip: false,
       formData: {
-        phone: "",
         code: "",
         captcha: "",
         newPassword: "",
@@ -70,18 +62,14 @@ export default {
     }
   },
   computed: {
-    userInfo() {
+    userInfo () {
       return store.userInfo
-    },
-    innerText() {
-      if (this.reverseNumber == 0) return "获取短信验证码";
-      return "重新发送" + '(' + this.reverseNumber + 's)';
     }
   },
   onReady() {
     this.$refs.form.setRules(this.rules)
   },
-  onLoad(e) {
+  onLoad (e) {
     this.uniIdRedirectUrl = e.uniIdRedirectUrl
     this.loginType = e.loginType
 
@@ -90,7 +78,7 @@ export default {
     }
   },
   methods: {
-    submit() {
+    submit () {
       if(! /^\d{6}$/.test(this.formData.code)){
         this.$refs.smsCode.focusSmsCodeInput = true
         return uni.showToast({
@@ -98,64 +86,45 @@ export default {
           icon: 'none'
         });
       }
+
       this.$refs.form.validate()
-        .then(res => {
-          uniIdCo.resetPwdBySms({
-            mobile: this.formData.phone,
-            password: this.formData.newPassword,
-            code: this.formData.code,
-            captcha: this.formData.captcha
-          }).then(e => {
-            uni.showModal({
-              content: '密码设置成功',
-              showCancel: false,
-              success: () => {
-                mutations.loginBack({
-                  uniIdRedirectUrl: this.uniIdRedirectUrl,
-                  loginType: this.loginType
-                })
-              }
-            });
+          .then(res => {
+            uniIdCo.setPwd({
+              password: this.formData.newPassword,
+              code: this.formData.code,
+              captcha: this.formData.captcha
+            }).then(e => {
+              uni.showModal({
+                content: '密码设置成功',
+                showCancel: false,
+                success: () => {
+                  mutations.loginBack({
+                    uniIdRedirectUrl: this.uniIdRedirectUrl,
+                    loginType: this.loginType
+                  })
+                }
+              });
+            }).catch(e => {
+              uni.showModal({
+                content: e.message,
+                showCancel: false
+              });
+            })
           }).catch(e => {
-            uni.showModal({
-              content: e.message,
-              showCancel: false
-            });
+            if (e.errCode == 'uni-id-captcha-required') {
+              this.$refs.popup.open()
+            } else {
+              console.log(e.errMsg);
+            }
+          }).finally(e => {
+            this.formData.captcha = ''
           })
-        })
-        .catch(e => {
-          if (e.errCode == 'uni-id-captcha-required') {
-            this.$refs.popup.open()
-          } else {
-            console.log(e.errMsg);
-          }
-        }).finally(e => {
-          // this.formData.captcha = ''
-        })
     },
-    skip() {
+    skip () {
       mutations.loginBack({
-        uniIdRedirectUrl: this.uniIdRedirectUrl,
-      })
-    },
-    //验证码
-    async getCaptcha() {
-      let legalPhone = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
-      if (!legalPhone.test(this.formData.phone)) {
-        uni.showToast({
-          title: '手机号格式不合法',
-          duration: 2000,
-          icon: 'none'
-        });
-        return
-      }
-      await uniIdCo.sendSmsCode({
-        mobile: this.formData.phone,
-        captcha: this.formData.captcha,
-        scene: "reset-pwd-by-smss"
-      })
-      console.log('验证码发送成功')
-    },
+		uniIdRedirectUrl: this.uniIdRedirectUrl,
+	  })
+    }
   }
 }
 </script>
@@ -164,7 +133,7 @@ export default {
 @import "@/uni_modules/uni-id-pages/common/login-page.scss";
 
 .uni-btn[type="default"] {
-  color: inherit !important;
+  color: inherit!important;
 }
 
 .uni-content ::v-deep .uni-forms-item {
@@ -198,41 +167,5 @@ export default {
 
 .popup-captcha .uni-btn {
   margin: 0;
-}
-
-.input-box {
-  margin: 0;
-  padding: 4px;
-  background-color: #F8F8F8;
-  font-size: 14px;
-}
-
-.short-code-btn {
-  padding: 0;
-  position: absolute;
-  top: 578rpx;
-  right: 35px;
-  width: 260rpx;
-  max-width: 100px;
-  height: 44px;
-  z-index: 2;
-  /* #ifndef APP-NVUE */
-  display: flex;
-  /* #endif */
-  justify-content: center;
-  align-items: center;
-}
-
-.inner-text {
-  font-size: 14px;
-  color: #AAAAAA;
-}
-
-.inner-text-active {
-  color: #04498c;
-}
-
-.box {
-  margin-top: 20rpx;
 }
 </style>
