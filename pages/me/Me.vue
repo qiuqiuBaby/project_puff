@@ -72,7 +72,6 @@ export default {
     },
     onShow() {
         this.getPersonMsg()
-        uni.hideTabBar()
     },
     methods: {
         //获取个人资料
