@@ -1,47 +1,50 @@
 {
-    "passwordSecret": [
-      {
-        "type": "hmac-sha256",
-        "version": 1
+  "passwordSecret": [
+    {
+      "type": "hmac-sha256",
+      "version": 1
+    }
+  ],
+  "passwordStrength": "medium",
+  "tokenSecret": "jingjingbaby",
+  "requestAuthSecret": "",
+  "tokenExpiresIn": 7200,
+  "tokenExpiresThreshold": 3600,
+  "passwordErrorLimit": 6,
+  "passwordErrorRetryTime": 3600,
+  "autoSetInviteCode": false,
+  "forceInviteCode": false,
+  "idCardCertifyLimit": 1,
+  "realNameCertifyLimit": 5,
+  "sensitiveInfoEncryptSecret": "",
+  "frvNeedAlivePhoto": false,
+  "userRegisterDefaultRole": [],
+  "mp-weixin": {
+    "tokenExpiresIn": 259200,
+    "tokenExpiresThreshold": 86400,
+    "oauth": {
+      "weixin": {
+        "appid": "wxa703e5a3d2e637c1",
+        "appsecret": "fbd7a7ac3f3f5bcf292f956d98e0b995"
       }
-    ], 
-    "passwordStrength": "medium",
-    "tokenSecret": "jingjingbaby", 
-    "requestAuthSecret": "", 
-    "tokenExpiresIn": 7200, 
-    "tokenExpiresThreshold": 3600,
-    "passwordErrorLimit": 6, 
-    "passwordErrorRetryTime": 3600,
-    "autoSetInviteCode": false, 
-    "forceInviteCode": false, 
-    "idCardCertifyLimit": 1, 
-    "realNameCertifyLimit": 5, 
-    "sensitiveInfoEncryptSecret": "", 
-    "frvNeedAlivePhoto": false, 
-    "userRegisterDefaultRole": [],
-    "mp-weixin": {
-      "tokenExpiresIn": 259200,
-      "tokenExpiresThreshold": 86400,
-      "oauth": {
-        "weixin": {
-          "appid": "wxa703e5a3d2e637c1",
-          "appsecret": "fbd7a7ac3f3f5bcf292f956d98e0b995"
-        }
-      }
-    },
-    "service": {
-      "sms": {
-        "name": "设置密码", 
-        "codeExpiresIn": 180,
-        "smsKey": "aeb5ee257bcb409f7abad40c52f9cc86", 
-        "smsSecret": "fe373ccf61514c25352322ac9d4b201e", 
-        "scene": {
-          "set-pwd-by-sms": {
-            "templateId": "17346", 
-            "codeExpiresIn": 300
-        }
+    }
+  },
+  "service": {
+    "sms": {
+      "name": "设置密码",
+      "codeExpiresIn": 180,
+      "smsKey": "aeb5ee257bcb409f7abad40c52f9cc86",
+      "smsSecret": "fe373ccf61514c25352322ac9d4b201e",
+      "scene": {
+        "set-pwd-by-sms": {
+          "templateId": "17346",
+          "codeExpiresIn": 300
+        },
+        "bind-mobile-by-sms": {
+          "templateId": "17346",
+          "codeExpiresIn": 300
         }
       }
     }
   }
-  
+}
